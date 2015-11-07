@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model name="jw:jwModel" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+    <description>Dynamic Model</description>
+    <author>wk</author>
+    <version>1.0</version>
+    <imports>
+        <!-- Import Alfresco Dictionary Definitions -->
+        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d"/>
+        <!-- Import Alfresco Content Domain Model Definitions -->
+        <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm"/>
+    </imports>
+    <!-- Introduction of new namespaces defined by this model -->
+    <!-- NOTE: The following namespace dynamic.model should be changed to reflect your own namespace -->
+    <namespaces>
+        <namespace uri="jw.model" prefix="jw"/>
+    </namespaces>
+    <!--
+    <types>
+        <type name="jw:info">
+            <title>Info</title>
+            <parent>cm:content</parent>
+            <properties>
+                <property name="jw:firstName">
+                    <title>First Name</title>
+                    <type>d:text</type>
+                </property>
+                <property name="jw:lastName">
+                    <title>Last Name</title>
+                    <type>d:text</type>
+                </property>
+            </properties>
+        </type>
+    </types>
+    -->
+
+    <aspects>
+        <aspect name="jw:info">
+            <title>Jw Information</title>
+            <properties>
+                <property name="jw:age">
+                    <type>d:int</type>
+                </property>
+                <property name="jw:firstName">
+                    <type>d:text</type>
+                </property>
+                <property name="jw:lastName">
+                    <type>d:text</type>
+                </property>
+            </properties>
+        </aspect>
+    </aspects>
+</model>

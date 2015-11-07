@@ -48,10 +48,19 @@ class RepositoryApiSpec {
         api.addAspectToFolder(path, aspect)
     }
 
+    @Test fun shouldAddCustomAspect() {
+        var path = "/wk"
+        var api = this.getApi()
+        var aspect = QAspect("P:jw:info", arrayOf(
+                        QProperty("jw:firstName", "Jannine"),
+                        QProperty("jw:lastName", "Weigel") ))
+        api.addAspectToFolder(path, aspect)
+    }
+
     @Test fun shouldCreateNewDocument() {
         var path = "/wk"
         var document = QDocument(
-                name = "HelloWorld2015.txt",
+                name = "1234.txt",
                 title = "Hello World 2015 - Title",
                 description = "Hello World 2015 - Description",
                 aspects = emptyArray(),
