@@ -1,16 +1,24 @@
 package zircle
 
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.Configuration
 import zircle.api.*
 import java.io.File
+import kotlin.test.assertTrue
 
 object TestConfig {
-    var atomPubUrl = "http://127.0.0.1:8081/alfresco/api/-default-/public/cmis/versions/1.0/atom"
+    var atomPubUrl = "http://127.0.0.1:8081/alfresco/api/-default-/public/cmis/versions/1.1/atom"
     var user = "admin"
     var password = "admin"
 }
 
 class RepositoryApiSpec {
+
+    @Autowired var appConfig: QAppConfig? = null;
 
     fun getApi(): QRepositoryApi {
         var config = QRepositoryConfig(
@@ -24,6 +32,10 @@ class RepositoryApiSpec {
     fun getResourceFile(name: String): File {
         var path = this.javaClass.classLoader.getResource(name).path
         return File(path)
+    }
+
+    @Test fun showInjectConfigurationProperty() {
+        assertTrue { appConfig != null }
     }
 
     @Test fun shoudGetFolderByPath() {
@@ -63,7 +75,10 @@ class RepositoryApiSpec {
                 name = "1234.txt",
                 title = "Hello World 2015 - Title",
                 description = "Hello World 2015 - Description",
-                aspects = emptyArray(),
+                aspects = arrayOf(QAspect("P:jw:info", arrayOf(
+                        QProperty("jw:firstName", "Jannine"),
+                        QProperty("jw:lastName", "Weigel")
+                ))),
                 contentType = "text/plain")
 
         var file = this.getResourceFile("Hello.txt")

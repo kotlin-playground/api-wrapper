@@ -11,6 +11,7 @@ import org.apache.chemistry.opencmis.commons.SessionParameter
 import org.apache.chemistry.opencmis.commons.enums.BindingType
 import org.apache.chemistry.opencmis.commons.enums.VersioningState
 import org.apache.chemistry.opencmis.commons.impl.dataobjects.ContentStreamImpl
+import org.springframework.boot.context.properties.ConfigurationProperties
 import java.io.ByteArrayInputStream
 import java.math.BigInteger
 import java.util.*
@@ -23,15 +24,7 @@ object QConstants {
     val CmisObjectId = "cmis:objectId"
 }
 
-data class QAppConfig(
-        val alfrescoUrl: String,
-        val user: String,
-        val password: String)
 
-data class QRepositoryConfig(
-        val atomPubUrl: String,
-        val user: String,
-        val password: String)
 
 data class QFolder(
         val name: String,
@@ -107,13 +100,19 @@ class QRepositoryApi(config: QRepositoryConfig) {
     }
 
     fun createDocument(path: String, document: QDocument, content: Array<Byte>): AlfrescoDocument {
+        var aspects = document.aspects.map { it.name }.joinToString (separator = ", ")
         var property = hashMapOf(
                 PropertyIds.NAME to document.name,
-                PropertyIds.OBJECT_TYPE_ID to QConstants.CmisDocumentWithTitle,
+                PropertyIds.OBJECT_TYPE_ID to QConstants.CmisDocumentWithTitle + ", " + aspects,
                 PropertyIds.CONTENT_STREAM_MIME_TYPE to document.contentType,
                 QConstants.CmDescription to document.description,
                 QConstants.CmTitle to document.title
         )
+        document.aspects.forEach {
+            it.properties.forEach {
+                property.put(it.name, "$it.value")
+            }
+        }
         var folder = this.getFolder(path)
         var length = BigInteger(content.size.toString())
         var stream = ByteArrayInputStream(content.toByteArray())
