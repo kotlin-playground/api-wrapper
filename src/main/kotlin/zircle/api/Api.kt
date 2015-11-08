@@ -68,14 +68,14 @@ class QRepositoryApi(config: QRepositoryConfig) {
     }
 
     fun removeAspectFromFolder(path: String, aspect: String): String {
-        var document = session.getObjectByPath(path) as AlfrescoFolder
+        var document = this.getFolder(path)
         document.removeAspect(aspect)
         var uuid = document.getProperty<String>(QConstants.CmisObjectId) as PropertyImpl
         return uuid.getValue()
     }
 
     fun addAspectToFolder(path: String, aspect: QAspect): Unit {
-        var document = session.getObjectByPath(path) as AlfrescoFolder
+        var document = this.getFolder(path)
         var map = HashMap<String, Any>()
         aspect.properties.forEach { map.put(it.name, it.value) }
         document.addAspect(aspect.name, map)
@@ -84,6 +84,11 @@ class QRepositoryApi(config: QRepositoryConfig) {
     fun getFolder(path: String): AlfrescoFolder {
         var folder = session.getObjectByPath(path)
         return folder as AlfrescoFolder
+    }
+
+    fun getDocument(path: String): AlfrescoDocument {
+        var document = session.getObjectByPath(path)
+        return document as AlfrescoDocument
     }
 
     fun createFolder(path: String, info: QFolder): AlfrescoFolder {

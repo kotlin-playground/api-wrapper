@@ -13,7 +13,6 @@ class RepositoryController {
     var config: QAppConfig? = null
 
     fun createRespositoryConfig() : QRepositoryConfig {
-        //var rul = config?.atomPubUrl?.replace("\${app.alfrescoUrl}", config!!.alfrescoUrl)
         return QRepositoryConfig(user = config!!.user, password = config!!.password, atomPubUrl = config!!.atomPubUrl)
     }
 
